@@ -15,6 +15,7 @@ app.listen(port, () => {
 const usersCollection = firestore.collection("users");
 const roomsCollection = firestore.collection("rooms");
 
+//crea el usuario en la collection dentro de la db
 app.post("/signup", (req, res) => {
 	const { name } = req.body;
 	usersCollection
@@ -42,6 +43,7 @@ app.post("/signup", (req, res) => {
 		});
 });
 
+//crea la room y guarda su rtdb en la collection
 app.post("/rooms", (req, res) => {
 	const { userId } = req.body;
 	usersCollection
@@ -76,6 +78,7 @@ app.post("/rooms", (req, res) => {
 		});
 });
 
+//obtiene el rtdbId guardado en la collection con el short id
 app.get("/rooms/:roomId", (req, res) => {
 	const { userId } = req.query;
 	const { roomId } = req.params;
@@ -101,6 +104,7 @@ app.get("/rooms/:roomId", (req, res) => {
 		});
 });
 
+//loguea al usuario en una sala por primera vez definiendo su estructura de currentGame y score
 app.post("/rooms/first-login", (req, res) => {
 	const { rtdbRoomId, userId, name } = req.body;
 	const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/currentGame/");
@@ -112,6 +116,7 @@ app.post("/rooms/first-login", (req, res) => {
 	res.json("First login successful");
 });
 
+//loguea al usuario en una sala
 app.post("/rooms/login", (req, res) => {
 	const { rtdbRoomId, userId, name } = req.body;
 	const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/currentGame/");
@@ -121,6 +126,7 @@ app.post("/rooms/login", (req, res) => {
 	res.json("Login successful");
 });
 
+//desloguea al usuario de la sala
 app.post("/rooms/logoff", (req, res) => {
 	const { rtdbRoomId, userId, name } = req.body;
 	const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/currentGame/" + userId);
@@ -128,6 +134,7 @@ app.post("/rooms/logoff", (req, res) => {
 	res.json("Player disconnected");
 });
 
+//define el estado del usuario listo para jugar (start = true)
 app.post("/rooms/start", (req, res) => {
 	const { rtdbRoomId, userId, name } = req.body;
 	const roomRef = rtdb.ref("/rooms/" + rtdbRoomId + "/currentGame/" + userId);
@@ -135,8 +142,9 @@ app.post("/rooms/start", (req, res) => {
 	res.json("Ready to play");
 });
 
+//define el estado del usuario como "no listo" para jugar
 app.post("/rooms/end", (req, res) => {
-	const { rtdbRoomId, userId, name } = req.body;
+	const { rtdbRoomId, userId } = req.body;
 	const roomRef = rtdb.ref(
 		"/rooms/" + rtdbRoomId + "/currentGame/" + userId + "/start"
 	);
@@ -144,6 +152,7 @@ app.post("/rooms/end", (req, res) => {
 	res.json("Not ready");
 });
 
+//envía la jugada del usuario a la rtdb
 app.post("/rooms/move", (req, res) => {
 	const { rtdbRoomId, userId, choice } = req.body;
 	const roomRef = rtdb.ref(
@@ -153,6 +162,7 @@ app.post("/rooms/move", (req, res) => {
 	res.json("You made a move");
 });
 
+//actualiza los datos del score en la rtdb
 app.post("/rooms/score", (req, res) => {
 	const { rtdbRoomId, userId, score } = req.body;
 	const roomRef = rtdb.ref(
@@ -162,6 +172,7 @@ app.post("/rooms/score", (req, res) => {
 	res.json("Score updated");
 });
 
+//resetea el score de la sala a 0
 app.post("/rooms/reset", (req, res) => {
 	const { rtdbRoomId, userId1, userId2 } = req.body;
 	const roomRef1 = rtdb.ref(
@@ -175,29 +186,31 @@ app.post("/rooms/reset", (req, res) => {
 	res.json("Score reseted");
 });
 
-app.post("/rooms/:roomId/push", (req, res) => {
-	const { roomId } = req.params;
-	const { p1, p2, p1Choice, p2Choice } = req.body;
-	const roomRef = roomsCollection.doc(roomId.toString());
-	roomRef.update({
-		history: fieldValue.arrayUnion({
-			p1name: p1,
-			p1choice: p1Choice,
-			p2name: p2,
-			p2choice: p2Choice,
-		}),
-	});
-	res.json("History updated");
-});
+//guarda la jugada en la collection
+// app.post("/rooms/:roomId/push", (req, res) => {
+// 	const { roomId } = req.params;
+// 	const { p1, p2, p1Choice, p2Choice } = req.body;
+// 	const roomRef = roomsCollection.doc(roomId.toString());
+// 	roomRef.update({
+// 		history: fieldValue.arrayUnion({
+// 			p1name: p1,
+// 			p1choice: p1Choice,
+// 			p2name: p2,
+// 			p2choice: p2Choice,
+// 		}),
+// 	});
+// 	res.json("History updated");
+// });
 
-app.post("/rooms/:roomId/reset", (req, res) => {
-	const { roomId } = req.params;
-	const roomRef = roomsCollection.doc(roomId.toString());
-	roomRef.update({
-		history: fieldValue.delete(),
-	});
-	res.json("History reseted");
-});
+//resetesa el historial de jugadas en la collection
+// app.post("/rooms/:roomId/reset", (req, res) => {
+// 	const { roomId } = req.params;
+// 	const roomRef = roomsCollection.doc(roomId.toString());
+// 	roomRef.update({
+// 		history: fieldValue.delete(),
+// 	});
+// 	res.json("History reseted");
+// });
 
 app.use(express.static("dist"));
 

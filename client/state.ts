@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { find, map, keys } from "lodash";
+// import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { map, keys } from "lodash";
 import "dotenv/config";
 
 const firebaseConfig = {
@@ -17,7 +17,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const rtdb = getDatabase(app);
-const firestore = getFirestore(app);
+// const firestore = getFirestore(app);
 const dev = process.env.NODE_ENV == "development";
 let API_BASE_URL = "http://localhost:3000";
 if (dev) {
@@ -412,33 +412,35 @@ const state = {
 			}
 		}
 	},
-	pushToHistory() {
-		const currentState = this.getState();
-		const currentGame = currentState.currentGame;
-		if (currentState.ownerId == currentState.userId) {
-			const owner = find(currentGame, (k) => {
-				if (k.name == currentState.name) {
-					return k.name;
-				}
-			});
-			const opponent = find(currentGame, (k) => {
-				if (k.name !== currentState.name) {
-					return k.name;
-				}
-			});
-			fetch(API_BASE_URL + "/rooms/" + currentState.roomId + "/push", {
-				method: "post",
-				headers: {
-					"content-type": "application/json",
-				},
-				body: JSON.stringify({
-					p1: owner.name,
-					p2: opponent.name,
-					p1Choice: owner.choice,
-					p2Choice: opponent.choice,
-				}),
-			});
-		}
-	},
+	//codigo para eventualmente poder hacer historial de las jugadas
+
+	// pushToHistory() {
+	// 	const currentState = this.getState();
+	// 	const currentGame = currentState.currentGame;
+	// 	if (currentState.ownerId == currentState.userId) {
+	// 		const owner = find(currentGame, (k) => {
+	// 			if (k.name == currentState.name) {
+	// 				return k.name;
+	// 			}
+	// 		});
+	// 		const opponent = find(currentGame, (k) => {
+	// 			if (k.name !== currentState.name) {
+	// 				return k.name;
+	// 			}
+	// 		});
+	// 		fetch(API_BASE_URL + "/rooms/" + currentState.roomId + "/push", {
+	// 			method: "post",
+	// 			headers: {
+	// 				"content-type": "application/json",
+	// 			},
+	// 			body: JSON.stringify({
+	// 				p1: owner.name,
+	// 				p2: opponent.name,
+	// 				p1Choice: owner.choice,
+	// 				p2Choice: opponent.choice,
+	// 			}),
+	// 		});
+	// 	}
+	// },
 };
 export { state };

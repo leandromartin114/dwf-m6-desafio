@@ -74,13 +74,6 @@ class AwaitPage extends HTMLElement {
 		});
 	}
 	addListeners() {
-		// state.subscribe(() => {
-		// 	const currentState = state.getState();
-		// 	const currentGame = map(currentState.currentGame);
-		// 	if (currentGame[0].start == true && currentGame[1].start == true) {
-		// 		Router.go("/game");
-		// 	}
-		// });
 		window.addEventListener("beforeunload", () => {
 			state.logoff();
 		});
