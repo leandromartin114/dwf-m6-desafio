@@ -1,0 +1,35 @@
+{
+	"name": "dwf-m6-desafio",
+	"version": "1.0.0",
+	"license": "MIT",
+	"scripts": {
+		"dev:front": "parcel serve ./client/index.html",
+		"dev:api": "nodemon --watch \"./server/index.ts\" --ext \"ts\" --exec \"ts-node ./server/index.ts\"",
+		"build:front": "parcel build ./client/index.html",
+		"build:api": "tsc index.ts",
+		"test": "ava",
+		"build": "yarn build:front && yarn build:api",
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"@types/node": "^17.0.31",
+		"@vaadin/router": "^1.7.4",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.0",
+		"express": "^4.18.1",
+		"firebase": "^9.7.0",
+		"firebase-admin": "^10.1.0",
+		"lodash": "^4.17.21",
+		"nanoid": "^3.3.3",
+		"nodemon": "^2.0.16",
+		"parcel": "^2.5.0",
+		"sweetalert": "^2.1.2",
+		"sweetalert2": "^11.4.14",
+		"typescript": "^4.6.4"
+	},
+	"devDependencies": {
+		"os-browserify": "^0.3.0",
+		"path-browserify": "^1.0.1",
+		"process": "^0.11.10"
+	}
+}
