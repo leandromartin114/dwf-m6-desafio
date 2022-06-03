@@ -1,6 +1,7 @@
 import { Router } from "@vaadin/router";
 import { state } from "../../state";
 import { map } from "lodash";
+import Swal from "sweetalert2";
 type Move = "piedra" | "papel" | "tijera";
 class MovesPage extends HTMLElement {
 	constructor() {
@@ -14,7 +15,11 @@ class MovesPage extends HTMLElement {
 		state.end();
 		state.setScore();
 		setTimeout(() => {
-			Router.go("/result");
+			if (this.myMove && this.opponentMove) {
+				Router.go("/result");
+			} else {
+				Router.go("/instructions");
+			}
 		}, 4000);
 	}
 	render() {
@@ -35,13 +40,22 @@ class MovesPage extends HTMLElement {
 				this.myMove = currentGame[1].choice;
 				this.opponentMove = currentGame[0].choice;
 			}
-			div.innerHTML = `
-			<div class="result">
-			<my-play class="${this.opponentMove}" type="${this.opponentMove}" tag="large"></my-play>
-			<my-play class="${this.myMove}" type="${this.myMove}" tag="large"></my-play>
-			</div>
-				`;
-		}, 2500);
+			if (this.myMove && this.opponentMove) {
+				div.innerHTML = `
+				<div class="result">
+				<my-play class="${this.opponentMove}" type="${this.opponentMove}" tag="large"></my-play>
+				<my-play class="${this.myMove}" type="${this.myMove}" tag="large"></my-play>
+				</div>
+					`;
+			} else {
+				Swal.fire({
+					title: "Your opponent didn't choose",
+					text: "Remember, you must choose before the countdown ends",
+					icon: "warning",
+					confirmButtonColor: "#006CFC",
+				});
+			}
+		}, 2000);
 		style.innerHTML = `
             .result{
                 display: grid;

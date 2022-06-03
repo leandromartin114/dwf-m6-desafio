@@ -24,7 +24,7 @@ class Result extends HTMLElement {
 		}
 		if (this.type == "lost") {
 			div.classList.add("lost");
-			div.textContent = "You Loose!";
+			div.textContent = "You Lost!";
 		}
 		div.classList.add("root");
 		style.innerHTML = `

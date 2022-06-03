@@ -82,6 +82,11 @@ class InstructionsPage extends HTMLElement {
 				}
 			});
 		});
+		const homeEl = this.shadow.querySelector(".home");
+		homeEl.addEventListener("click", () => {
+			state.logoff();
+			Router.go("/home");
+		});
 		window.addEventListener("beforeunload", () => {
 			state.logoff();
 		});
@@ -103,6 +108,7 @@ class InstructionsPage extends HTMLElement {
                     <my-text class="text" tag="p">Press "Play" and choose: 
                     rock, paper or scissors before the countdown ends.</my-text>
                     <my-button class="play-button">Play</my-button>
+					<my-button class="home">Home</my-button>
                     <div class="moves">
                         <div ><my-play type="piedra"></></div>
                         <div ><my-play type="papel"></></div>
@@ -133,6 +139,10 @@ class InstructionsPage extends HTMLElement {
                         width: 300px;
                         margin: 25px 0;
                     }
+					.home{
+						width: 300px;
+                        margin: 25px 0;
+					}
                     .moves{
                         display: flex;
                         width: 300px;

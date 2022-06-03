@@ -6,10 +6,10 @@
 		"dev:front": "parcel serve ./client/index.html",
 		"dev:api": "nodemon --watch \"./server/index.ts\" --ext \"ts\" --exec \"ts-node ./server/index.ts\"",
 		"build:front": "parcel build ./client/index.html",
-		"build:api": "tsc index.ts",
+		"build:api": "tsc ./server/index.ts",
 		"test": "ava",
 		"build": "yarn build:front && yarn build:api",
-		"start": "node index.js"
+		"start": "node ./server/index.js"
 	},
 	"dependencies": {
 		"@types/node": "^17.0.31",
