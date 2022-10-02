@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 const rtdb = getDatabase(app);
 // const firestore = getFirestore(app);
 const dev = process.env.NODE_ENV == "development";
-let API_BASE_URL = "https://dwf-m6-rock-paper-scissors.herokuapp.com";
+let API_BASE_URL = "https://dwf-m6-rock-paper-scissors.onrender.com";
 if (dev) {
 	API_BASE_URL = "http://localhost:3000";
 }
